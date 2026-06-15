@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mpc-agent"
+version = "0.1.0"
+description = "MPC auto-configuration agent with MCP/Skills support"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mpc_agent*"]
+
+[tool.setuptools.package-data]
+mpc_agent = ["skills/*/SKILL.md", "skills/*/scripts/*.py"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
