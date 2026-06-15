@@ -18,6 +18,12 @@ The project includes an HTTP API, a lightweight web UI, MCP-style local tools/re
 ## demo
 
 
+https://github.com/user-attachments/assets/994162e8-2898-4159-9b6f-287e25bec9eb
+
+
+
+
+
 ## Project Structure
 
 ```text
