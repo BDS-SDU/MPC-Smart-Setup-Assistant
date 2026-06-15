@@ -15,6 +15,9 @@ The project includes an HTTP API, a lightweight web UI, MCP-style local tools/re
 - Built-in web UI served by `server.py`.
 - Persistent local case memory for experience-driven routing.
 
+## demo
+
+
 ## Project Structure
 
 ```text
