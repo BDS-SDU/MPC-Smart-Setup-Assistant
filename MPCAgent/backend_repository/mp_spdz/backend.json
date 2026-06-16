@@ -1,0 +1,20 @@
+{
+  "name": "mp_spdz",
+  "display_name": "MP-SPDZ",
+  "protocols": [
+    "semi2k",
+    "mascot",
+    "spdz2k",
+    "malicious-shamir",
+    "shamir",
+    "replicated-ring",
+    "yao",
+    "lowgear"
+  ],
+  "best_for": [
+    "malicious security",
+    "protocol benchmarking",
+    "broad arithmetic, binary, ring, honest-majority, and dishonest-majority coverage"
+  ],
+  "runtime_required": "Built MP-SPDZ checkout"
+}

@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MPC Protocol Configuration Workbench</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">M</div>
+          <div>
+            <h1>MPC Protocol Configuration Workbench</h1>
+            <p id="serviceStatus">Connecting to service</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button id="schemaButton" class="icon-button" type="button" title="View configuration schema" aria-label="View configuration schema">
+            <span aria-hidden="true">□</span>
+          </button>
+          <button id="copyButton" class="icon-button" type="button" title="Copy configuration JSON" aria-label="Copy configuration JSON">
+            <span aria-hidden="true">⧉</span>
+          </button>
+          <button id="downloadButton" class="icon-button" type="button" title="Download configuration JSON" aria-label="Download configuration JSON">
+            <span aria-hidden="true">↓</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="chat-pane" aria-label="Multi-turn requirement input">
+          <div class="pane-header">
+            <div>
+              <h2>Requirement Chat</h2>
+              <p id="sessionLabel">New session</p>
+            </div>
+            <button id="resetButton" class="subtle-button" type="button">
+              <span aria-hidden="true">↻</span>
+              Reset
+            </button>
+          </div>
+
+          <div id="messages" class="messages" aria-live="polite">
+            <article class="message assistant">
+              <p>Enter an MPC requirement, and I will generate a protocol configuration snapshot.</p>
+            </article>
+          </div>
+
+          <form id="chatForm" class="composer">
+            <label class="sr-only" for="messageInput">MPC requirement</label>
+            <textarea
+              id="messageInput"
+              rows="5"
+              placeholder="Example: three-party malicious security, at most one corrupted party, arithmetic circuit, Shamir sharing, Beaver triples preprocessing, synchronous network with authenticated channels."
+            ></textarea>
+            <div class="composer-footer">
+              <span id="requestState">Waiting for input</span>
+              <button id="sendButton" class="primary-button" type="submit">
+                <span aria-hidden="true">→</span>
+                Generate Config
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="options-pane" aria-label="Structured MPC options">
+          <div class="pane-header">
+            <div>
+              <h2>Structured MPC Options</h2>
+              <p>Explicit selections are applied with priority.</p>
+            </div>
+            <button id="clearOptionsButton" class="subtle-button" type="button">
+              <span aria-hidden="true">×</span>
+              Clear
+            </button>
+          </div>
+
+          <div class="option-grid">
+            <label class="option-field">
+              <span>Participant Scale</span>
+              <select id="participantScaleSelect">
+                <option value="">Auto</option>
+                <option value="2-party">2-party</option>
+                <option value="3-party">3-party</option>
+                <option value="n-party">n-party</option>
+              </select>
+              <small>Choose a common scale first, then specify an exact party count if needed.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Number of Parties</span>
+              <input id="partyCountInput" type="number" min="2" step="1" placeholder="e.g. 5" />
+              <small>Use this for n-party settings or to override the scale selection.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Circuit Form</span>
+              <select id="circuitFormSelect">
+                <option value="">Auto</option>
+                <option value="Arithmetic">Arithmetic</option>
+                <option value="Boolean">Boolean</option>
+                <option value="Mixed">Mixed</option>
+                <option value="GarbledCircuit">Garbled Circuit</option>
+                <option value="R1CS">R1CS</option>
+              </select>
+              <small>Arithmetic fits sums, means, and linear algebra; Boolean fits comparisons and bit operations.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Underlying Math Structure</span>
+              <select id="mathStructureSelect">
+                <option value="">Auto</option>
+                <option value="PrimeField">Prime field</option>
+                <option value="FiniteField">Finite field</option>
+                <option value="RingZ2k">Ring Z_2^k</option>
+                <option value="BinaryField">Binary field</option>
+              </select>
+              <small>Shamir usually requires a field; rings are common for efficient integer sharing.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Secret Sharing</span>
+              <select id="secretSharingSelect">
+                <option value="">Auto</option>
+                <option value="Shamir">Shamir</option>
+                <option value="Additive">Additive</option>
+                <option value="Replicated">Replicated</option>
+                <option value="Authenticated">Authenticated</option>
+              </select>
+              <small>Leave this as Auto if you are not sure.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Preprocessing Phase</span>
+              <select id="preprocessingSelect">
+                <option value="">Auto</option>
+                <option value="Required">Required</option>
+                <option value="None">None</option>
+              </select>
+              <small>When preprocessing is required, Beaver triples are added by default.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Adversary Behavior</span>
+              <select id="adversaryBehaviorSelect">
+                <option value="">Auto</option>
+                <option value="Semi-honest">Semi-honest</option>
+                <option value="Malicious">Malicious</option>
+                <option value="Covert">Covert</option>
+                <option value="Rational">Rational</option>
+                <option value="Fail-stop">Fail-stop</option>
+              </select>
+              <small>Parties that deviate from the protocol map to a malicious model.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Corruption Strategy</span>
+              <select id="corruptionStrategySelect">
+                <option value="">Auto</option>
+                <option value="Static">Static</option>
+                <option value="Adaptive">Adaptive</option>
+                <option value="Mobile">Mobile</option>
+                <option value="Rushing">Rushing</option>
+                <option value="Non-rushing">Non-rushing</option>
+              </select>
+              <small>Static corruption means corrupted parties are fixed before the protocol starts.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Network Model</span>
+              <select id="networkModelSelect">
+                <option value="">Auto</option>
+                <option value="Synchronous">Synchronous</option>
+                <option value="Asynchronous">Asynchronous</option>
+                <option value="PartialSynchrony">Partial synchrony</option>
+                <option value="WAN">WAN</option>
+                <option value="LAN">LAN</option>
+              </select>
+              <small>Synchronous settings assume bounded message delays.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Channel Model</span>
+              <select id="channelModelSelect">
+                <option value="">Auto</option>
+                <option value="Authenticated channels">Authenticated channels</option>
+                <option value="Private channels">Private channels</option>
+                <option value="TLS channels">TLS channels</option>
+                <option value="PKI-authenticated channels">PKI-authenticated channels</option>
+              </select>
+              <small>Most malicious-security protocols require at least authenticated channels.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Corruption Threshold</span>
+              <select id="corruptionThresholdSelect">
+                <option value="">Auto</option>
+                <option value="t < n/2">t &lt; n/2</option>
+                <option value="t < n/3">t &lt; n/3</option>
+                <option value="t=1">t = 1</option>
+                <option value="honest majority">Honest majority</option>
+                <option value="dishonest majority">Dishonest majority</option>
+              </select>
+              <small>The threshold strongly affects protocol-family selection.</small>
+            </label>
+
+            <label class="option-field">
+              <span>Security Goal</span>
+              <select id="securityGoalSelect">
+                <option value="">Auto</option>
+                <option value="PrivacyCorrectness">Privacy + correctness</option>
+                <option value="Abort">Security with abort</option>
+                <option value="GuaranteedOutputDelivery">Guaranteed output delivery</option>
+                <option value="Fairness">Fairness</option>
+                <option value="Robustness">Robustness</option>
+              </select>
+              <small>Use natural language for finer points such as composability or leakage.</small>
+            </label>
+          </div>
+        </section>
+
+        <section class="config-pane" aria-label="Protocol configuration snapshot">
+          <div class="metrics-grid">
+            <div class="metric">
+              <span>Parties</span>
+              <strong id="metricParties">-</strong>
+            </div>
+            <div class="metric">
+              <span>Circuit</span>
+              <strong id="metricCircuit">-</strong>
+            </div>
+            <div class="metric">
+              <span>Adversary</span>
+              <strong id="metricAdversary">-</strong>
+            </div>
+            <div class="metric">
+              <span>Confidence</span>
+              <strong id="metricConfidence">-</strong>
+            </div>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Configuration views">
+            <button class="tab active" type="button" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+            <button class="tab" type="button" data-tab="details" role="tab" aria-selected="false">Fields</button>
+            <button class="tab" type="button" data-tab="json" role="tab" aria-selected="false">JSON</button>
+          </div>
+
+          <div id="overviewPanel" class="tab-panel">
+            <div class="section-row">
+              <section class="surface">
+                <h3>Protocol Recommendation</h3>
+                <p id="recommendationText" class="body-text">Not generated yet.</p>
+                <div id="targetList" class="chip-list"></div>
+              </section>
+              <section class="surface">
+                <h3>Security Goals</h3>
+                <div id="securityList" class="key-value-list"></div>
+              </section>
+            </div>
+
+            <div class="section-row">
+              <section class="surface attention">
+                <h3>Missing Fields</h3>
+                <div id="missingList" class="list-box empty">None</div>
+              </section>
+              <section class="surface danger">
+                <h3>Conflicts</h3>
+                <div id="conflictList" class="list-box empty">None</div>
+              </section>
+            </div>
+
+            <section class="surface">
+              <h3>Clarifying Questions</h3>
+              <div id="questionList" class="list-box empty">None</div>
+            </section>
+
+            <section class="surface backend-surface">
+              <div class="surface-title-row">
+                <h3>Backend Protocol Execution</h3>
+                <button id="refreshBackendButton" class="subtle-button compact" type="button">
+                  <span aria-hidden="true">↻</span>
+                  Reselect
+                </button>
+              </div>
+              <div class="backend-summary">
+                <div>
+                  <span>Recommended Backend</span>
+                  <strong id="backendName">-</strong>
+                </div>
+                <div>
+                  <span>Protocol</span>
+                  <strong id="backendProtocol">-</strong>
+                </div>
+                <div>
+                  <span>Score</span>
+                  <strong id="backendScore">-</strong>
+                </div>
+              </div>
+              <div id="backendReasons" class="list-box empty">None</div>
+              <h4>Execution Plan</h4>
+              <div id="backendSteps" class="list-box empty">None</div>
+            </section>
+          </div>
+
+          <div id="detailsPanel" class="tab-panel hidden">
+            <div id="detailGrid" class="detail-grid"></div>
+          </div>
+
+          <div id="jsonPanel" class="tab-panel hidden">
+            <pre id="jsonOutput" class="json-output">{}</pre>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <dialog id="schemaDialog" class="schema-dialog">
+      <div class="dialog-header">
+        <h2>Configuration Schema</h2>
+        <button id="closeSchemaButton" class="icon-button" type="button" title="Close" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <pre id="schemaOutput" class="json-output"></pre>
+    </dialog>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

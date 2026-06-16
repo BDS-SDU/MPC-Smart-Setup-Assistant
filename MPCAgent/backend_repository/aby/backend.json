@@ -1,0 +1,11 @@
+{
+  "name": "aby",
+  "display_name": "ABY",
+  "protocols": ["ArithmeticSharing", "BooleanSharing", "YaoSharing", "ABY-Mixed"],
+  "best_for": [
+    "semi-honest two-party computation",
+    "mixed arithmetic and boolean subroutines",
+    "comparison-heavy two-party workflows"
+  ],
+  "runtime_required": "ABY build and runtime binaries"
+}

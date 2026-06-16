@@ -1,0 +1,11 @@
+{
+  "name": "motion",
+  "display_name": "MOTION",
+  "protocols": ["BooleanGMW", "ArithmeticGMW", "BMR", "MOTION-Mixed"],
+  "best_for": [
+    "small-party mixed MPC workloads",
+    "engineered boolean and arithmetic execution",
+    "practical 2PC and 3PC experimentation"
+  ],
+  "runtime_required": "MOTION build and runtime binaries"
+}

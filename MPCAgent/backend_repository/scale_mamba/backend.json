@@ -1,0 +1,11 @@
+{
+  "name": "scale_mamba",
+  "display_name": "SCALE-MAMBA",
+  "protocols": ["SPDZ", "MASCOT", "Shamir"],
+  "best_for": [
+    "arithmetic malicious-security execution",
+    "SPDZ-style preprocessing-heavy protocols",
+    "alternative arithmetic MPC deployments"
+  ],
+  "runtime_required": "SCALE-MAMBA installation"
+}

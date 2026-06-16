@@ -1,0 +1,11 @@
+{
+  "name": "spu",
+  "display_name": "SPU",
+  "protocols": ["SEMI2K", "ABY3", "CHEETAH"],
+  "best_for": [
+    "semi-honest 2PC/3PC",
+    "tensor and ML workloads",
+    "ring-style arithmetic"
+  ],
+  "runtime_required": "SecretFlow/SPU"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "crypten",
+  "display_name": "CrypTen",
+  "protocols": ["CrypTen-MPC"],
+  "best_for": [
+    "PyTorch-oriented privacy-preserving ML",
+    "semi-honest tensor experiments"
+  ],
+  "runtime_required": "CrypTen and PyTorch"
+}

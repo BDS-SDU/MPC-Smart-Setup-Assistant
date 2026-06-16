@@ -1,0 +1,11 @@
+{
+  "name": "emp_sh2pc",
+  "display_name": "EMP-sh2pc",
+  "protocols": ["Yao-GC", "SemiHonest2PC"],
+  "best_for": [
+    "semi-honest two-party computation",
+    "boolean and garbled-circuit workloads",
+    "lightweight 2PC prototypes"
+  ],
+  "runtime_required": "EMP-sh2pc build and runtime binaries"
+}
