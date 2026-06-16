@@ -1,8 +1,0 @@
-{
-  "runtime_mode": "wsl",
-  "wsl_distro": "Ubuntu",
-  "spu_home": "C:\\path\\to\\spu",
-  "spu_python": "C:\\path\\to\\spu_env\\Scripts\\python.exe",
-  "spu_python_wsl": "/home/user/venvs/spu_env/bin/python"
-}
-
